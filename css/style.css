@@ -1,0 +1,93 @@
+p {
+    margin: 0;
+    font-size: 22px;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+[id="gameWrap"] {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+}
+
+.gameField {
+    display: flex;
+    flex-wrap: wrap;
+    width: 600px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.sqare {
+    background: lightskyblue;
+    width: 33%;
+    height: 200px;
+    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.sqare:hover {
+    background: #3eaaee;
+}
+
+.btn-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.btn {
+    background: #aa2727;
+    text-decoration: underline;
+    color: white;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.btn:hover {
+    background: #ff0000;
+}
+
+.o {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 10px blue solid;
+}
+
+.x {
+    width: 200px;
+    height: 200px;
+    position: relative;
+}
+
+.x:before, 
+.x:after {
+    content: '';
+    position: absolute;
+    width: 196px;
+    height: 10px;
+    background-color: red;
+    top: 50%;
+}
+
+.x:before{
+    transform:rotate(45deg);
+    left:2px;
+}
+.x:after{
+    transform:rotate(-45deg);
+    right:2px;
+}
