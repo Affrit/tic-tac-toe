@@ -15,20 +15,20 @@ let roundNum = 1 // current game round
 let move = 0 // current game move (up to 9)
 let firstPlayerPts = 0
 let secondPlayerPts = 0
-let turn = true // if true - 'X' player's turn, false - '0'
-let firstPlayerId = 1
-let secondPlayerId = 0
+let turn = 'x' // if 'x' - first player's turn, if 'o' - second player's turn
+let firstPlayerId = 'x'
+let secondPlayerId = 'o'
 
-const fieldState = { // sqareID = true when it free, 0 - was occupied by the player 'O', 1 - was occupied by the player 'X'
-    sqare1: true,
-    sqare2: true,
-    sqare3: true,
-    sqare4: true,
-    sqare5: true,
-    sqare6: true,
-    sqare7: true,
-    sqare8: true,
-    sqare9: true,
+const fieldState = { // sqareID = ' ' when it free, 'o' - was occupied by the player 'o', 'x' - was occupied by the player 'x'
+    sqare1: ' ',
+    sqare2: ' ',
+    sqare3: ' ',
+    sqare4: ' ',
+    sqare5: ' ',
+    sqare6: ' ',
+    sqare7: ' ',
+    sqare8: ' ',
+    sqare9: ' ',
 }
 
 const updateInfo = () => {
@@ -37,15 +37,15 @@ const updateInfo = () => {
 }
 
 const clearField = () => { // clears the playing field, and resets the values ​​in the playing field state object
-    for (let element of sqares) {
+    for (const element of sqares) {
         element.innerHTML = ''
     }
-    for (key in fieldState) {
-        fieldState[key] = true
+    for (const key in fieldState) {
+        fieldState[key] = ' '
     }
 }
 
-function isHasWinner(playerId) {
+function didFigureWin(playerId) {
     const optionsArr = [
         [1, 2, 3],
         [4, 5, 6],
@@ -57,7 +57,7 @@ function isHasWinner(playerId) {
         [3, 5, 7],
     ]
 
-    for (let option of optionsArr) {
+    for (const option of optionsArr) {
         const [id1, id2, id3] = option
         const key1 = `sqare${id1}`
         const key2 = `sqare${id2}`
@@ -75,7 +75,7 @@ const changeFigureforPlayer = () => { // Swaps playerID. In the next round, the 
 
 const nextRound = (win) => {
     roundNum += 1
-    turn = true
+    turn = 'x'
     move = 0
 
     if (win === firstPlayerId) {
@@ -91,21 +91,24 @@ const nextRound = (win) => {
     changeFigureforPlayer()
 }
 
-const nextTurn = () => {
-    if (turn) {
-        turn = false
+const nextMove = () => {
+    if (turn === 'x') {
+        turn = 'o'
     } else {
-        turn = true
+        turn = 'x'
     }
     move += 1
 
-    if (isHasWinner(firstPlayerId)) {
+    if (didFigureWin(firstPlayerId)) {
         alert('Игрок1 Выиграл!')
         nextRound(firstPlayerId)
+        return
     }
-    if (isHasWinner(secondPlayerId)) {
+    
+    if (didFigureWin(secondPlayerId)) {
         alert('Игрок2 Выиграл!')
         nextRound(secondPlayerId)
+        return
     }
 
     if (move === 9) {
@@ -120,23 +123,26 @@ const createElement = (nodeName, className) => {
     return element
 }
 
-const onSqareClicked = ({ target }) => {
-    if (!fieldState[target.id] || fieldState[target.id] === 1) {
+const onSquareClicked = ({ target }) => {
+    if (!fieldState[target.id] || 
+         fieldState[target.id] === 'x' || 
+         fieldState[target.id] === 'o') {
+
         alert('Поле Занято!')
         return
     }
 
-    if (turn) {
-        fieldState[target.id] = 1
+    if (turn === 'x') {
+        fieldState[target.id] = 'x'
         const x = createElement('div', 'x')
         target.append(x)
     } else {
-        fieldState[target.id] = 0
+        fieldState[target.id] = 'o'
         const o = createElement('div', 'o')
         target.append(o)
     }
 
-    setTimeout(nextTurn, 50)
+    setTimeout(nextMove, 50)
 }
 
 const onRestart = () => { // resets all values ​​to start a new game
@@ -144,12 +150,12 @@ const onRestart = () => { // resets all values ​​to start a new game
     move = 0
     firstPlayerPts = 0
     secondPlayerPts = 0
-    turn = true
-    firstPlayerId = 1
-    secondPlayerId = 0
+    turn = 'x'
+    firstPlayerId = 'x'
+    secondPlayerId = 'o'
     clearField()
     updateInfo()
 }
 
-gameField.addEventListener('click', onSqareClicked)
+gameField.addEventListener('click', onSquareClicked)
 restartBtn.addEventListener('click', onRestart)
